@@ -373,6 +373,11 @@ void measure_offsets() {
   if (chassis.odom_tracker_front != nullptr) chassis.odom_tracker_front->distance_to_center_set(f_offset);
 }
 
-// . . .
-// Make your own autonomous functions here!
-// . . .
+void odomtuning(){
+    chassis.pid_odom_set({{24_in, 24_in, 90_deg}, fwd, DRIVE_SPEED},
+                       true);
+    chassis.pid_wait();
+    chassis.pid_odom_set({{0_in, 0_in, 0_deg}, rev, DRIVE_SPEED},
+                       true);
+    chassis.pid_wait();
+}

@@ -72,6 +72,8 @@ void initialize() {
       {"Boomerang\n\nGo to (0, 24, 45) then come back to (0, 0, 0)", odom_boomerang_example},
       {"Boomerang Pure Pursuit\n\nGo to (0, 24, 45) on the way to (24, 24) then come back to (0, 0, 0)", odom_boomerang_injected_pure_pursuit_example},
       {"Measure Offsets\n\nThis will turn the robot a bunch of times and calculate your offsets for your tracking wheels.", measure_offsets},
+
+      {"tune my rangs!!!", odomtuning},
   });
 
   // Initialize chassis and auton selector
@@ -257,15 +259,15 @@ void opcontrol() {
     if(master.get_digital(DIGITAL_L1) || master.get_digital(DIGITAL_L2) || master.get_digital(DIGITAL_R1)){
       fintake.move(127);
     }else if(master.get_digital(DIGITAL_R2)){
-      fintake.move(-90);
+      fintake.move(-127);
     }else{
       fintake.move(0);
     }
 
     if(master.get_digital(DIGITAL_L1) || master.get_digital(DIGITAL_L2) || master.get_digital(DIGITAL_R1)){
-      mintake.move(90);
+      mintake.move(127);
     }else if(master.get_digital(DIGITAL_R2)){
-      mintake.move(-90);
+      mintake.move(-127);
     }else{
       mintake.move(0);
     }
@@ -274,7 +276,7 @@ void opcontrol() {
       tintake.move(127);
       hood.set(true);
     }else if(master.get_digital(DIGITAL_R1) || master.get_digital(DIGITAL_R2)){
-      tintake.move(-90);
+      tintake.move(-127);
     }else if(master.get_digital(DIGITAL_L2)){
       hood.set(false);
       if(hoodd.get() > 125){
