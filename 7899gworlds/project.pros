@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "wok (NOT TUNED)",
+    "project_name": "unseasoned wok",
     "target": "v5",
     "templates": {
       "EZ-Template": {

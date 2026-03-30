@@ -307,10 +307,6 @@ void odom_boomerang_injected_pure_pursuit_example() {
                         {{24_in, 24_in}, fwd, DRIVE_SPEED}},
                        true);
   chassis.pid_wait();
-
-  chassis.pid_odom_set({{0_in, 0_in, 0_deg}, rev, DRIVE_SPEED},
-                       true);
-  chassis.pid_wait();
 }
 
 ///
@@ -375,9 +371,6 @@ void measure_offsets() {
 
 void odomtuning(){
     chassis.pid_odom_set({{24_in, 24_in, 90_deg}, fwd, DRIVE_SPEED},
-                       true);
-    chassis.pid_wait();
-    chassis.pid_odom_set({{0_in, 0_in, 0_deg}, rev, DRIVE_SPEED},
                        true);
     chassis.pid_wait();
 }

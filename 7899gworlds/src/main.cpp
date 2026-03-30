@@ -256,15 +256,22 @@ void opcontrol() {
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
     // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
 
-    if(master.get_digital(DIGITAL_L1) || master.get_digital(DIGITAL_L2) || master.get_digital(DIGITAL_R1)){
+    if(master.get_digital(DIGITAL_L1) || master.get_digital(DIGITAL_L2)){
+      intlift.set(true);
+      fintake.move(127);
+    }else if (master.get_digital(DIGITAL_R1)){
+      intlift.set(true);
       fintake.move(127);
     }else if(master.get_digital(DIGITAL_R2)){
+      intlift.set(false);
       fintake.move(-127);
     }else{
       fintake.move(0);
     }
 
-    if(master.get_digital(DIGITAL_L1) || master.get_digital(DIGITAL_L2) || master.get_digital(DIGITAL_R1)){
+    if(master.get_digital(DIGITAL_L1) || master.get_digital(DIGITAL_L2)){
+      mintake.move(127);
+    }else if(master.get_digital(DIGITAL_R1)){
       mintake.move(127);
     }else if(master.get_digital(DIGITAL_R2)){
       mintake.move(-127);
@@ -275,7 +282,9 @@ void opcontrol() {
     if(master.get_digital(DIGITAL_L1)){
       tintake.move(127);
       hood.set(true);
-    }else if(master.get_digital(DIGITAL_R1) || master.get_digital(DIGITAL_R2)){
+    }else if(master.get_digital(DIGITAL_R1)){
+      tintake.move(-127);
+    }else if(master.get_digital(DIGITAL_R2)){
       tintake.move(-127);
     }else if(master.get_digital(DIGITAL_L2)){
       hood.set(false);
