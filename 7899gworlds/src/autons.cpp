@@ -1,4 +1,6 @@
+#include "EZ-Template/util.hpp"
 #include "main.h"
+#include "pros/motors.h"
 
 /////
 // For installation, upgrading, documentations, and tutorials, check out our website!
@@ -6,8 +8,8 @@
 /////
 
 // These are out of 127
-const int DRIVE_SPEED = 110;
-const int TURN_SPEED = 90;
+const int DRIVE_SPEED = 127;
+const int TURN_SPEED = 127;
 const int SWING_SPEED = 110;
 
 ///
@@ -15,9 +17,9 @@ const int SWING_SPEED = 110;
 ///
 void default_constants() {
   // P, I, D, and Start I
-  chassis.pid_drive_constants_set(32.0, 0.0, 250.0);         // Fwd/rev constants, used for odom and non odom motions
+  chassis.pid_drive_constants_set(27.0, 0.0, 270.0);         // Fwd/rev constants, used for odom and non odom motions
   chassis.pid_heading_constants_set(11.0, 0.0, 20.0);        // Holds the robot straight while going forward without odom
-  chassis.pid_turn_constants_set(3.0, 0.05, 20.0, 15.0);     // Turn in place constants
+  chassis.pid_turn_constants_set(8.0, 0.05, 54.0, 15.0);     // Turn in place constants
   chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
   chassis.pid_odom_angular_constants_set(6.5, 0.0, 52.5);    // Angular control for odom motions
   chassis.pid_odom_boomerang_constants_set(5.8, 0.0, 32.5);  // Angular control for boomerang motions
@@ -39,7 +41,7 @@ void default_constants() {
 
   // The amount that turns are prioritized over driving in odom motions
   // - if you have tracking wheels, you can run this higher.  1.0 is the max
-  chassis.odom_turn_bias_set(0.9);
+  chassis.odom_turn_bias_set(0.94);
 
   chassis.odom_look_ahead_set(7_in);           // This is how far ahead in the path the robot looks at
   chassis.odom_boomerang_distance_set(16_in);  // This sets the maximum distance away from target that the carrot point can be
@@ -330,7 +332,7 @@ void measure_offsets() {
     chassis.pid_targets_reset();
     chassis.drive_imu_reset();
     chassis.drive_sensor_reset();
-    chassis.drive_brake_set(MOTOR_BRAKE_HOLD);
+    chassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);
     chassis.odom_xyt_set(0_in, 0_in, 0_deg);
     double imu_start = chassis.odom_theta_get();
     double target = i % 2 == 0 ? 90 : 270;  // Switch the turn target every run from 270 to 90
@@ -369,8 +371,70 @@ void measure_offsets() {
   if (chassis.odom_tracker_front != nullptr) chassis.odom_tracker_front->distance_to_center_set(f_offset);
 }
 
-void odomtuning(){
-    chassis.pid_odom_set({{24_in, 24_in, 90_deg}, fwd, DRIVE_SPEED},
-                       true);
-    chassis.pid_wait();
+void intakedist(){
+  while (true){
+      if(hoodd.get() > 125){
+        fintake.move(127);
+        mintake.move(127);
+        tintake.move(127);
+      }else{
+        fintake.move(127);
+        mintake.move(127);
+        tintake.move(0);
+      }
+  }
+}
+
+void soloawp(){
+  chassis.drive_brake_set(pros::E_MOTOR_BRAKE_BRAKE);
+  hood.set(false);
+  fintake.move(127);
+  mintake.move(127);
+  tintake.move(127);
+  chassis.pid_drive_set(26, DRIVE_SPEED, true);
+  chassis.pid_wait_quick_chain();
+  intlift.set(false);
+  scraper.set(true);
+  chassis.pid_turn_set(90, TURN_SPEED, true);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_drive_set(11, 60,true);
+  pros::delay(400);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_drive_set(-27.5, 80, true);
+  chassis.pid_wait_quick_chain();
+  hood.set(true);
+  pros::delay(750);
+  hood.set(false);
+  scraper.set(false);
+  chassis.pid_turn_set(-150, TURN_SPEED,true);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_drive_set(8, DRIVE_SPEED,true);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_turn_set(180, TURN_SPEED, true);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_drive_set(36, 100, true);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_turn_set(135, TURN_SPEED, true);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_drive_set(-12, DRIVE_SPEED,true);
+  chassis.pid_wait_quick_chain();
+  fintake.move(-127);
+  mintake.move(-127);
+  tintake.move(-127);
+  pros::delay(100);
+  fintake.move(127);
+  mintake.move(127);
+  pros::delay(800);
+  tintake.move(127);
+  chassis.pid_drive_set(43, DRIVE_SPEED, true);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_turn_set(90, TURN_SPEED, true);
+  chassis.pid_wait_quick_chain();
+  scraper.set(true);
+  chassis.pid_drive_set(16, DRIVE_SPEED, true);
+  chassis.pid_wait_quick_chain();
+  pros::delay(300);
+  chassis.pid_drive_set(-28, DRIVE_SPEED, true);
+  chassis.pid_wait_quick_chain();
+  hood.set(true);
 }

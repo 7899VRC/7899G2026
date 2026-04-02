@@ -58,6 +58,7 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+      {"solo autonomous win point (middle last)\nblaised pork belly", soloawp},
       {"Drive\n\nDrive forward and come back", drive_example},
       {"Turn\n\nTurn 3 times.", turn_example},
       {"Drive and Turn\n\nDrive forward, turn, come back", drive_and_turn},
@@ -72,14 +73,12 @@ void initialize() {
       {"Boomerang\n\nGo to (0, 24, 45) then come back to (0, 0, 0)", odom_boomerang_example},
       {"Boomerang Pure Pursuit\n\nGo to (0, 24, 45) on the way to (24, 24) then come back to (0, 0, 0)", odom_boomerang_injected_pure_pursuit_example},
       {"Measure Offsets\n\nThis will turn the robot a bunch of times and calculate your offsets for your tracking wheels.", measure_offsets},
-
-      {"tune my rangs!!!", odomtuning},
   });
 
   // Initialize chassis and auton selector
   chassis.initialize();
   ez::as::initialize();
-  master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
+  master.rumble(chassis.drive_imu_calibrated() ? ".." : "---");
 }
 
 /**
@@ -246,6 +245,10 @@ void opcontrol() {
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
   tintake.set_brake_mode(MOTOR_BRAKE_HOLD);
 
+  fintake.move(0);
+  mintake.move(0);
+  tintake.move(0);
+
   while (true) {
     // Gives you some extras to make EZ-Template ezier
     ez_template_extras();
@@ -257,13 +260,13 @@ void opcontrol() {
     // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
 
     if(master.get_digital(DIGITAL_L1) || master.get_digital(DIGITAL_L2)){
-      intlift.set(true);
+      intlift.set(false);
       fintake.move(127);
     }else if (master.get_digital(DIGITAL_R1)){
-      intlift.set(true);
+      intlift.set(false);
       fintake.move(127);
     }else if(master.get_digital(DIGITAL_R2)){
-      intlift.set(false);
+      intlift.set(true);
       fintake.move(-127);
     }else{
       fintake.move(0);
