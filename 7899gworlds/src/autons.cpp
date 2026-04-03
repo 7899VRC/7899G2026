@@ -21,7 +21,7 @@ void default_constants() {
   chassis.pid_heading_constants_set(11.0, 0.0, 20.0);        // Holds the robot straight while going forward without odom
   chassis.pid_turn_constants_set(8.0, 0.05, 54.0, 15.0);     // Turn in place constants
   chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
-  chassis.pid_odom_angular_constants_set(6.5, 0.0, 52.5);    // Angular control for odom motions
+  chassis.pid_odom_angular_constants_set(2.0, 0.0, 105.0);    // Angular control for odom motions
   chassis.pid_odom_boomerang_constants_set(5.8, 0.0, 32.5);  // Angular control for boomerang motions
 
   // Exit conditions
@@ -391,50 +391,57 @@ void soloawp(){
   fintake.move(127);
   mintake.move(127);
   tintake.move(127);
-  chassis.pid_drive_set(26, DRIVE_SPEED, true);
+  chassis.pid_drive_set(25, DRIVE_SPEED, true);
   chassis.pid_wait_quick_chain();
   intlift.set(false);
   scraper.set(true);
   chassis.pid_turn_set(90, TURN_SPEED, true);
   chassis.pid_wait_quick_chain();
-  chassis.pid_drive_set(11, 60,true);
-  pros::delay(400);
+  chassis.pid_drive_set(10, 60,true);
+  pros::delay(750);
   chassis.pid_wait_quick_chain();
   chassis.pid_drive_set(-27.5, 80, true);
   chassis.pid_wait_quick_chain();
   hood.set(true);
-  pros::delay(750);
+  pros::delay(600);
   hood.set(false);
   scraper.set(false);
   chassis.pid_turn_set(-150, TURN_SPEED,true);
   chassis.pid_wait_quick_chain();
-  chassis.pid_drive_set(8, DRIVE_SPEED,true);
+  chassis.pid_drive_set(6.75, DRIVE_SPEED,true);
   chassis.pid_wait_quick_chain();
   chassis.pid_turn_set(180, TURN_SPEED, true);
   chassis.pid_wait_quick_chain();
-  chassis.pid_drive_set(36, 100, true);
+  chassis.pid_drive_set(40, 100, true);
+  chassis.pid_wait_quick_chain();
   chassis.pid_wait_quick_chain();
   chassis.pid_turn_set(135, TURN_SPEED, true);
   chassis.pid_wait_quick_chain();
-  chassis.pid_drive_set(-12, DRIVE_SPEED,true);
+  chassis.pid_drive_set(-11.5, DRIVE_SPEED,true);
   chassis.pid_wait_quick_chain();
   fintake.move(-127);
   mintake.move(-127);
   tintake.move(-127);
   pros::delay(100);
   fintake.move(127);
-  mintake.move(127);
+  mintake.move(85);
+  tintake.move(-55);
   pros::delay(800);
   tintake.move(127);
-  chassis.pid_drive_set(43, DRIVE_SPEED, true);
+  chassis.pid_drive_set(42.75, DRIVE_SPEED, true);
   chassis.pid_wait_quick_chain();
   chassis.pid_turn_set(90, TURN_SPEED, true);
   chassis.pid_wait_quick_chain();
   scraper.set(true);
   chassis.pid_drive_set(16, DRIVE_SPEED, true);
+  pros::delay(400);
   chassis.pid_wait_quick_chain();
-  pros::delay(300);
   chassis.pid_drive_set(-28, DRIVE_SPEED, true);
   chassis.pid_wait_quick_chain();
   hood.set(true);
+}
+
+void movehorizontal(){
+  chassis.pid_odom_set({{24, 0}, fwd, DRIVE_SPEED});
+  chassis.pid_wait();
 }
