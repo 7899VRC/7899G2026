@@ -20,7 +20,7 @@ ez::Drive chassis(
 //  - you should get positive values on the encoders going FORWARD and RIGHT
 // - `2.75` is the wheel diameter
 // - `4.0` is the distance from the center of the wheel to the center of the robot
-ez::tracking_wheel horiz_tracker(15, 2, 2.5);  // This tracking wheel is perpendicular to the drive wheels
+ez::tracking_wheel horiz_tracker(-15, 2, 2.0);  // This tracking wheel is perpendicular to the drive wheels
 // ez::tracking_wheel vert_tracker(9, 2.75, 4.0);   // This tracking wheel is parallel to the drive wheels
 
 /**
@@ -58,6 +58,7 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+      {"seven ball push right", sevenpushright},
       {"solo autonomous win point (middle last)\nblaised pork belly", soloawp},
       {"Drive\n\nDrive forward and come back", drive_example},
       {"Turn\n\nTurn 3 times.", turn_example},
@@ -73,7 +74,6 @@ void initialize() {
       {"Boomerang\n\nGo to (0, 24, 45) then come back to (0, 0, 0)", odom_boomerang_example},
       {"Boomerang Pure Pursuit\n\nGo to (0, 24, 45) on the way to (24, 24) then come back to (0, 0, 0)", odom_boomerang_injected_pure_pursuit_example},
       {"Measure Offsets\n\nThis will turn the robot a bunch of times and calculate your offsets for your tracking wheels.", measure_offsets},
-      {"move horizontal to (24,0)", movehorizontal}
   });
 
   // Initialize chassis and auton selector
