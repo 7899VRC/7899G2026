@@ -8,19 +8,19 @@
 // Chassis constructor
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
-    {-13, -12, -11},     // Left Chassis Ports (negative port will reverse it!)
-    {18, 19, 20},  // Right Chassis Ports (negative port will reverse it!)
+    {1, 2, 3},     // Left Chassis Ports (negative port will reverse it!)
+    {-4, -5, -6},  // Right Chassis Ports (negative port will reverse it!)
 
-    10,      // IMU Port
-    3.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
-    450);   // Wheel RPM = cartridge * (motor gear / wheel gear)
+    7,      // IMU Port
+    4.125,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
+    343);   // Wheel RPM = cartridge * (motor gear / wheel gear)
 
 // Uncomment the trackers you're using here!
 // - `8` and `9` are smart ports (making these negative will reverse the sensor)
 //  - you should get positive values on the encoders going FORWARD and RIGHT
 // - `2.75` is the wheel diameter
 // - `4.0` is the distance from the center of the wheel to the center of the robot
-ez::tracking_wheel horiz_tracker(-15, 2, 2.0);  // This tracking wheel is perpendicular to the drive wheels
+// ez::tracking_wheel horiz_tracker(8, 2.75, 4.0);  // This tracking wheel is perpendicular to the drive wheels
 // ez::tracking_wheel vert_tracker(9, 2.75, 4.0);   // This tracking wheel is parallel to the drive wheels
 
 /**
@@ -38,7 +38,7 @@ void initialize() {
   // Look at your horizontal tracking wheel and decide if it's in front of the midline of your robot or behind it
   //  - change `back` to `front` if the tracking wheel is in front of the midline
   //  - ignore this if you aren't using a horizontal tracker
-  chassis.odom_tracker_back_set(&horiz_tracker);
+  // chassis.odom_tracker_back_set(&horiz_tracker);
   // Look at your vertical tracking wheel and decide if it's to the left or right of the center of the robot
   //  - change `left` to `right` if the tracking wheel is to the right of the centerline
   //  - ignore this if you aren't using a vertical tracker
@@ -58,34 +58,26 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-      {"odometry test", odomtest},
-      {"seven ball push left", sevenpushleft},
-      {"four ball push right", fourpushright},
-      {"three plus four right", threeplusfourright},
-      {"seven ball push right", sevenpushright},
-      {"four ball push left", fourpushleft},
-      {"three plus four left", threeplusfourleft},
-      {"solo autonomous win point (middle last)\nblaised pork belly", soloawp},
-      // {"Drive\n\nDrive forward and come back", drive_example},
-      // {"Turn\n\nTurn 3 times.", turn_example},
-      // {"Drive and Turn\n\nDrive forward, turn, come back", drive_and_turn},
-      // {"Drive and Turn\n\nSlow down during drive", wait_until_change_speed},
-      // {"Swing Turn\n\nSwing in an 'S' curve", swing_example},
-      // {"Motion Chaining\n\nDrive forward, turn, and come back, but blend everything together :D", motion_chaining},
-      // {"Combine all 3 movements", combining_movements},
-      // {"Interference\n\nAfter driving forward, robot performs differently if interfered or not", interfered_example},
+      {"Drive\n\nDrive forward and come back", drive_example},
+      {"Turn\n\nTurn 3 times.", turn_example},
+      {"Drive and Turn\n\nDrive forward, turn, come back", drive_and_turn},
+      {"Drive and Turn\n\nSlow down during drive", wait_until_change_speed},
+      {"Swing Turn\n\nSwing in an 'S' curve", swing_example},
+      {"Motion Chaining\n\nDrive forward, turn, and come back, but blend everything together :D", motion_chaining},
+      {"Combine all 3 movements", combining_movements},
+      {"Interference\n\nAfter driving forward, robot performs differently if interfered or not", interfered_example},
       {"Simple Odom\n\nThis is the same as the drive example, but it uses odom instead!", odom_drive_example},
       {"Pure Pursuit\n\nGo to (0, 30) and pass through (6, 10) on the way.  Come back to (0, 0)", odom_pure_pursuit_example},
-      // {"Pure Pursuit Wait Until\n\nGo to (24, 24) but start running an intake once the robot passes (12, 24)", odom_pure_pursuit_wait_until_example},
+      {"Pure Pursuit Wait Until\n\nGo to (24, 24) but start running an intake once the robot passes (12, 24)", odom_pure_pursuit_wait_until_example},
       {"Boomerang\n\nGo to (0, 24, 45) then come back to (0, 0, 0)", odom_boomerang_example},
-      // {"Boomerang Pure Pursuit\n\nGo to (0, 24, 45) on the way to (24, 24) then come back to (0, 0, 0)", odom_boomerang_injected_pure_pursuit_example},
-      // {"Measure Offsets\n\nThis will turn the robot a bunch of times and calculate your offsets for your tracking wheels.", measure_offsets},
+      {"Boomerang Pure Pursuit\n\nGo to (0, 24, 45) on the way to (24, 24) then come back to (0, 0, 0)", odom_boomerang_injected_pure_pursuit_example},
+      {"Measure Offsets\n\nThis will turn the robot a bunch of times and calculate your offsets for your tracking wheels.", measure_offsets},
   });
 
   // Initialize chassis and auton selector
   chassis.initialize();
   ez::as::initialize();
-  master.rumble(chassis.drive_imu_calibrated() ? ".." : "---");
+  master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
 }
 
 /**
@@ -250,82 +242,20 @@ void ez_template_extras() {
 void opcontrol() {
   // This is preference to what you like to drive on
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
-  tintake.set_brake_mode(MOTOR_BRAKE_HOLD);
-
-  fintake.move(0);
-  mintake.move(0);
-  tintake.move(0);
 
   while (true) {
     // Gives you some extras to make EZ-Template ezier
     ez_template_extras();
 
-    // chassis.opcontrol_tank();  // Tank control
-    chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
+    chassis.opcontrol_tank();  // Tank control
+    // chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
     // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
 
-    if(master.get_digital(DIGITAL_L1) || master.get_digital(DIGITAL_L2)){
-      intlift.set(false);
-      fintake.move(127);
-    }else if (master.get_digital(DIGITAL_R1)){
-      intlift.set(false);
-      fintake.move(127);
-    }else if(master.get_digital(DIGITAL_R2)){
-      intlift.set(true);
-      fintake.move(-127);
-    }else{
-      fintake.move(0);
-    }
-
-    if(master.get_digital(DIGITAL_L1) || master.get_digital(DIGITAL_L2)){
-      mintake.move(127);
-    }else if(master.get_digital(DIGITAL_R1)){
-      mintake.move(127);
-    }else if(master.get_digital(DIGITAL_R2)){
-      mintake.move(-127);
-    }else{
-      mintake.move(0);
-    }
-
-    if(master.get_digital(DIGITAL_L1)){
-      tintake.move(127);
-      hood.set(true);
-    }else if(master.get_digital(DIGITAL_R1)){
-      tintake.move(-127);
-    }else if(master.get_digital(DIGITAL_R2)){
-      tintake.move(-127);
-    }else if(master.get_digital(DIGITAL_L2)){
-      hood.set(false);
-      if(hoodd.get() > 125){
-        tintake.move(127);
-      }else{
-        double hoodtimer = pros::millis();
-        while(((pros::millis()-hoodtimer) < 2000) && master.get_digital(DIGITAL_L2)){
-          ez_template_extras();
-
-          chassis.opcontrol_arcade_standard(ez::SPLIT);
-
-          hood.button_toggle(master.get_digital(DIGITAL_RIGHT));
-          descore.button_toggle(master.get_digital( DIGITAL_B));
-          scraper.button_toggle(master.get_digital(DIGITAL_DOWN));
-          intlift.button_toggle(master.get_digital(DIGITAL_Y));
-          midesc.button_toggle(master.get_digital(DIGITAL_UP));
-
-          pros::delay(ez::util::DELAY_TIME);
-        }
-        tintake.move(0);
-      }
-    }else{
-      tintake.move(0);
-    }
-
-    hood.button_toggle(master.get_digital(DIGITAL_RIGHT));
-    descore.button_toggle(master.get_digital(DIGITAL_B));
-    scraper.button_toggle(master.get_digital(DIGITAL_DOWN));
-    intlift.button_toggle(master.get_digital(DIGITAL_Y));
-    midesc.button_toggle(master.get_digital(DIGITAL_UP));
+    // . . .
+    // Put more user control code here!
+    // . . .
 
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }

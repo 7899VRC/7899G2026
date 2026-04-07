@@ -16,13 +16,3 @@ void odom_pure_pursuit_wait_until_example();
 void odom_boomerang_example();
 void odom_boomerang_injected_pure_pursuit_example();
 void measure_offsets();
-
-void soloawp();
-void sevenpushright();
-void threeplusfourright();
-void fourpushright();
-
-void sevenpushleft();
-void threeplusfourleft();
-void fourpushleft();
-void odomtest();
