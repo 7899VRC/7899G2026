@@ -19,3 +19,4 @@ void measure_offsets();
 
 void soloawp();
 void sevenpushright();
+void DkAutoTest();

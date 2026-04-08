@@ -17,12 +17,12 @@ const int SWING_SPEED = 110;
 ///
 void default_constants() {
   // P, I, D, and Start I
-  chassis.pid_drive_constants_set(27.0, 0.0, 270.0);         // Fwd/rev constants, used for odom and non odom motions
+  chassis.pid_drive_constants_set(15.0, 0.0, 270.0);         // was 27.0  0.0 270.0 Fwd/rev constants, used for odom and non odom motions
   chassis.pid_heading_constants_set(11.0, 0.0, 20.0);        // Holds the robot straight while going forward without odom
   chassis.pid_turn_constants_set(8.0, 0.05, 54.0, 15.0);     // Turn in place constants
   chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
   chassis.pid_odom_angular_constants_set(2.0, 0.0, 105.0);    // Angular control for odom motions
-  chassis.pid_odom_boomerang_constants_set(5.8, 0.0, 48.5);  // Angular control for boomerang motions
+  chassis.pid_odom_boomerang_constants_set(10.0, 0.0, 100.0);  // was 5.0, 0.0, 48.5 Angular control for boomerang motions
 
   // Exit conditions
   chassis.pid_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
@@ -41,7 +41,7 @@ void default_constants() {
 
   // The amount that turns are prioritized over driving in odom motions
   // - if you have tracking wheels, you can run this higher.  1.0 is the max
-  chassis.odom_turn_bias_set(0.94);
+  chassis.odom_turn_bias_set(0.7);
 
   chassis.odom_look_ahead_set(7_in);           // This is how far ahead in the path the robot looks at
   chassis.odom_boomerang_distance_set(16_in);  // This sets the maximum distance away from target that the carrot point can be
@@ -369,6 +369,7 @@ void measure_offsets() {
   if (chassis.odom_tracker_right != nullptr) chassis.odom_tracker_right->distance_to_center_set(r_offset);
   if (chassis.odom_tracker_back != nullptr) chassis.odom_tracker_back->distance_to_center_set(b_offset);
   if (chassis.odom_tracker_front != nullptr) chassis.odom_tracker_front->distance_to_center_set(f_offset);
+  printf("Back Offset: %f\n",b_offset);
 }
 
 void intakedist(){
@@ -460,7 +461,8 @@ void sevenpushright(){
   chassis.pid_wait_quick_chain();
   chassis.pid_drive_set(19, 90, true);
   chassis.pid_wait_quick_chain();
-  pros::delay(750);
+  printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>Holding after load\n");
+  pros::delay(3750);// was 750
   chassis.pid_drive_set(-28, DRIVE_SPEED, true);
   chassis.pid_wait_quick_chain();
   hood.set(true);
@@ -476,3 +478,33 @@ void sevenpushright(){
   chassis.pid_drive_set(-22, 80);
   chassis.pid_wait_quick_chain();
 }
+
+void DkAutoTest(){
+  printf("Starting DK Auto Test\n");
+// printf("back tracker first offset: %f\n", chassis.odom_tracker_back != nullptr ? chassis.odom_tracker_back->distance_to_center_get() : 0.0);
+ //printf("back tracker offset: %f\n", chassis.odom_tracker_back != nullptr ? chassis.odom_tracker_back->distance_to_center_get() : 0.0);
+chassis.drive_brake_set(pros::E_MOTOR_BRAKE_BRAKE);
+// Drive forward to (0, 36) forward, end at 45 degrees
+
+     printf("start Pos: X: %.2f, Y: %.2f, Heading: %.2f\n", 
+           chassis.odom_x_get(), 
+           chassis.odom_y_get(), 
+           chassis.odom_theta_get());
+
+chassis.pid_odom_set({{24_in, 24_in, 90_deg}, fwd, DRIVE_SPEED}, true);
+chassis.pid_wait();
+
+     printf("finish Pos: X: %.2f, Y: %.2f, Heading: %.2f\n", 
+           chassis.odom_x_get(), 
+           chassis.odom_y_get(), 
+           chassis.odom_theta_get());
+   pros::delay(1000);        
+ // chassis.pid_drive_set(25, DRIVE_SPEED, true);
+
+// chassis.pid_wait();
+//pros::delay(1000);
+     printf("Pos: X: %.2f, Y: %.2f, Heading: %.2f\n", 
+           chassis.odom_x_get(), 
+           chassis.odom_y_get(), 
+           chassis.odom_theta_get());
+  }
