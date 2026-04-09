@@ -510,10 +510,11 @@ chassis.drive_brake_set(pros::E_MOTOR_BRAKE_BRAKE);
  
            while (true){
              pros::delay(50);
-             printf("Pos: X: %.2f, Y: %.2f, Heading: %.2f\n", 
+             printf("Pos: X: %.2f, Y: %.2f, Heading: %.2f, tracker b: %.2f\n", 
              chassis.odom_x_get(), 
              chassis.odom_y_get(), 
-             chassis.odom_theta_get());
+             chassis.odom_theta_get(),
+             chassis.odom_tracker_back != nullptr ? chassis.odom_tracker_back->get() : 0.0);
            }
   
   
