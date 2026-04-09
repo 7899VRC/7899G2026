@@ -491,8 +491,8 @@ chassis.drive_brake_set(pros::E_MOTOR_BRAKE_BRAKE);
            chassis.odom_y_get(), 
            chassis.odom_theta_get());
 
-chassis.pid_odom_set({{24_in, 24_in, 90_deg}, fwd, DRIVE_SPEED}, true);
-chassis.pid_wait();
+//chassis.pid_odom_set({{24_in, 24_in, 90_deg}, fwd, DRIVE_SPEED}, true);
+//chassis.pid_wait();
 
      printf("finish Pos: X: %.2f, Y: %.2f, Heading: %.2f\n", 
            chassis.odom_x_get(), 
@@ -507,4 +507,14 @@ chassis.pid_wait();
            chassis.odom_x_get(), 
            chassis.odom_y_get(), 
            chassis.odom_theta_get());
-  }
+ 
+           while (true){
+             pros::delay(50);
+             printf("Pos: X: %.2f, Y: %.2f, Heading: %.2f\n", 
+             chassis.odom_x_get(), 
+             chassis.odom_y_get(), 
+             chassis.odom_theta_get());
+           }
+  
+  
+}
