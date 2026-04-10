@@ -1,5 +1,4 @@
 #include "main.h"
-#include "opcontrol.hpp"
 
 /////
 // For installation, upgrading, documentations, and tutorials, check out our website!
