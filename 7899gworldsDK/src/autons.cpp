@@ -22,13 +22,13 @@ void default_constants() {
   chassis.pid_turn_constants_set(8.0, 0.05, 54.0, 15.0);     // Turn in place constants
   chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
   chassis.pid_odom_angular_constants_set(2.0, 0.0, 105.0);    // Angular control for odom motions
-  chassis.pid_odom_boomerang_constants_set(10.0, 0.0, 100.0);  // was 5.0, 0.0, 48.5 Angular control for boomerang motions
+  chassis.pid_odom_boomerang_constants_set(5.0, 0.0, 68.5);  // was 5.0, 0.0, 48.5 Angular control for boomerang motions
 
   // Exit conditions
   chassis.pid_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
   chassis.pid_swing_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
   chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 500_ms, 500_ms);
-  chassis.pid_odom_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 750_ms);
+  chassis.pid_odom_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 750_ms);  
   chassis.pid_odom_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 500_ms, 750_ms);
   chassis.pid_turn_chain_constant_set(3_deg);
   chassis.pid_swing_chain_constant_set(5_deg);
@@ -490,9 +490,11 @@ chassis.drive_brake_set(pros::E_MOTOR_BRAKE_BRAKE);
            chassis.odom_x_get(), 
            chassis.odom_y_get(), 
            chassis.odom_theta_get());
+//boomerang
+  chassis.pid_odom_set({{0_in, 24_in, 45_deg}, fwd, DRIVE_SPEED},
+                       true);
+  chassis.pid_wait();
 
-//chassis.pid_odom_set({{24_in, 24_in, 90_deg}, fwd, DRIVE_SPEED}, true);
-//chassis.pid_wait();
 
      printf("finish Pos: X: %.2f, Y: %.2f, Heading: %.2f\n", 
            chassis.odom_x_get(), 
