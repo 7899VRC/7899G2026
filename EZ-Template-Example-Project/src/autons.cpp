@@ -20,7 +20,7 @@ void default_constants() {
   chassis.pid_turn_constants_set(8.0, 0.05, 54.0, 15.0);     // Turn in place constants
   chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
   chassis.pid_odom_angular_constants_set(12.5, 0.0, 64.5);    // Angular control for odom motions
-  chassis.pid_odom_boomerang_constants_set(9.0, 0.0, 32.5);  // Angular control for boomerang motions
+  chassis.pid_odom_boomerang_constants_set(11.0, 0.05, 52.5);  // Angular control for boomerang motions
 
   // Exit conditions
   chassis.pid_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
@@ -39,11 +39,11 @@ void default_constants() {
 
   // The amount that turns are prioritized over driving in odom motions
   // - if you have tracking wheels, you can run this higher.  1.0 is the max
-  chassis.odom_turn_bias_set(0.9);
+  chassis.odom_turn_bias_set(0.94);
 
   chassis.odom_look_ahead_set(7_in);           // This is how far ahead in the path the robot looks at
   chassis.odom_boomerang_distance_set(16_in);  // This sets the maximum distance away from target that the carrot point can be
-  chassis.odom_boomerang_dlead_set(0.625);     // This handles how aggressive the end of boomerang motions are
+  chassis.odom_boomerang_dlead_set(0.475);     // This handles how aggressive the end of boomerang motions are
 
   chassis.pid_angle_behavior_set(ez::shortest);  // Changes the default behavior for turning, this defaults it to the shortest path there
 }
@@ -383,60 +383,74 @@ void soloawp(){
   fintake.move(127);
   mintake.move(127);
   tintake.move(127);
+  
+  chassis.pid_odom_set({{{0, 22}, fwd, DRIVE_SPEED},
+                        {{9.5, 32}, fwd, DRIVE_SPEED}}, false);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-21, 32, 90}, rev, DRIVE_SPEED}, false);
+  while(chassis.odom_x_get() > -18){
+    pros::delay(10);
+  }
+  hood.set(true);
+  chassis.pid_wait();
 
-  chassis.pid_odom_set({{0, 32}, fwd, DRIVE_SPEED});
-  chassis.pid_wait();
-  chassis.pid_turn_set({10, 32}, fwd, TURN_SPEED);
-  chassis.pid_wait();
-  chassis.pid_odom_set({{10, 32}, fwd, DRIVE_SPEED});
+  pros::delay(600);
+  hood.set(false);
+  scraper.set(false);
+
+  chassis.pid_odom_set({{{-25, 0}, fwd, DRIVE_SPEED},
+                       {{-25, -40}, fwd, DRIVE_SPEED}}, false);
   chassis.pid_wait();
 
-  chassis.pid_odom_set({{-20, 32}, rev, DRIVE_SPEED});
+  scraper.set(true);
+
+  chassis.pid_odom_set({{{1, -64}, fwd, DRIVE_SPEED},
+                      {{-21, -64}, rev, DRIVE_SPEED}}, false);
   chassis.pid_wait();
 
   hood.set(true);
   pros::delay(600);
   hood.set(false);
-  scraper.set(false);
-
-  chassis.pid_odom_set({{{-26, 0}, fwd, DRIVE_SPEED},
-                        {{-26, -42}, fwd, DRIVE_SPEED}});
-  chassis.pid_wait();
-
   scraper.set(true);
 
-  chassis.pid_turn_set({-40, -25}, rev, TURN_SPEED);
+  chassis.pid_odom_set({{15, -64}, fwd, DRIVE_SPEED}, false);
   chassis.pid_wait();
-  chassis.pid_odom_set({{-40, -25}, rev, DRIVE_SPEED});
-  chassis.pid_wait();
-
+  chassis.pid_odom_set({{-38, -29}, rev, DRIVE_SPEED}, false);
+  while(chassis.odom_x_get() > -35){
+    pros::delay(10);
+  }
   fintake.move(-127);
   mintake.move(-127);
   tintake.move(-127);
-  pros::delay(100);
+
+  chassis.pid_wait();
+
   fintake.move(127);
   mintake.move(85);
   tintake.move(-55);
-  pros::delay(800);
-  tintake.move(127);
 
-  chassis.pid_odom_set({{{1, -64}, fwd, DRIVE_SPEED},
-                        {{8, -64}, fwd, DRIVE_SPEED}});
-  chassis.pid_wait();
+  // chassis.pid_turn_set({-38, -30}, rev, TURN_SPEED, false);
+  // chassis.pid_wait();
+  // chassis.pid_odom_set({{-38, -30}, rev, DRIVE_SPEED}, false);
+  // chassis.pid_wait();
 
-  pros::delay(300);
+  // fintake.move(-127);
+  // mintake.move(-127);
+  // tintake.move(-127);
+  // pros::delay(50);
+  // fintake.move(127);
+  // mintake.move(85);
+  // tintake.move(-55);
+  // pros::delay(800);
+  // tintake.move(127);
 
-  chassis.pid_turn_set({-22, -64}, rev, TURN_SPEED);
-  chassis.pid_wait();
-  chassis.pid_odom_set({{-22, -64}, rev, DRIVE_SPEED});
-  chassis.pid_wait();
+  // chassis.pid_odom_set({{{1, -63}, fwd, DRIVE_SPEED},
+  //                       {{15, -63}, fwd, DRIVE_SPEED}}, false);
+  // chassis.pid_wait();
+  // chassis.pid_odom_set({{-21, -63, 90}, rev, DRIVE_SPEED}, false);
+  // chassis.pid_wait();
 
-  hood.set(true);
-  pros::delay(1000);
-  hood.set(false);
-}
-
-void boomerang(){
-  chassis.pid_odom_set({{24, 24, 90}, fwd, DRIVE_SPEED});
-  chassis.pid_wait();
+  // hood.set(true);
+  // pros::delay(1000);
+  // hood.set(false);
 }
