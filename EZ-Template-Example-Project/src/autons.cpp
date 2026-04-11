@@ -6,21 +6,21 @@
 /////
 
 // These are out of 127
-const int DRIVE_SPEED = 110;
-const int TURN_SPEED = 90;
-const int SWING_SPEED = 110;
+const int DRIVE_SPEED = 127;
+const int TURN_SPEED = 127;
+const int SWING_SPEED = 120;
 
 ///
 // Constants
 ///
 void default_constants() {
   // P, I, D, and Start I
-  chassis.pid_drive_constants_set(20.0, 0.0, 100.0);         // Fwd/rev constants, used for odom and non odom motions
+  chassis.pid_drive_constants_set(24.0, 0.0, 270.0);         // Fwd/rev constants, used for odom and non odom motions
   chassis.pid_heading_constants_set(11.0, 0.0, 20.0);        // Holds the robot straight while going forward without odom
-  chassis.pid_turn_constants_set(3.0, 0.05, 20.0, 15.0);     // Turn in place constants
+  chassis.pid_turn_constants_set(8.0, 0.05, 54.0, 15.0);     // Turn in place constants
   chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
-  chassis.pid_odom_angular_constants_set(6.5, 0.0, 52.5);    // Angular control for odom motions
-  chassis.pid_odom_boomerang_constants_set(5.8, 0.0, 32.5);  // Angular control for boomerang motions
+  chassis.pid_odom_angular_constants_set(12.5, 0.0, 64.5);    // Angular control for odom motions
+  chassis.pid_odom_boomerang_constants_set(9.0, 0.0, 32.5);  // Angular control for boomerang motions
 
   // Exit conditions
   chassis.pid_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
@@ -373,6 +373,70 @@ void measure_offsets() {
   if (chassis.odom_tracker_front != nullptr) chassis.odom_tracker_front->distance_to_center_set(f_offset);
 }
 
-// . . .
-// Make your own autonomous functions here!
-// . . .
+void soloawp(){
+  // solo autonomous win point
+
+  chassis.drive_brake_set(pros::E_MOTOR_BRAKE_BRAKE);
+  hood.set(false);
+  intlift.set(false);
+  scraper.set(true);
+  fintake.move(127);
+  mintake.move(127);
+  tintake.move(127);
+
+  chassis.pid_odom_set({{0, 32}, fwd, DRIVE_SPEED});
+  chassis.pid_wait();
+  chassis.pid_turn_set({10, 32}, fwd, TURN_SPEED);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{10, 32}, fwd, DRIVE_SPEED});
+  chassis.pid_wait();
+
+  chassis.pid_odom_set({{-20, 32}, rev, DRIVE_SPEED});
+  chassis.pid_wait();
+
+  hood.set(true);
+  pros::delay(600);
+  hood.set(false);
+  scraper.set(false);
+
+  chassis.pid_odom_set({{{-26, 0}, fwd, DRIVE_SPEED},
+                        {{-26, -42}, fwd, DRIVE_SPEED}});
+  chassis.pid_wait();
+
+  scraper.set(true);
+
+  chassis.pid_turn_set({-40, -25}, rev, TURN_SPEED);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-40, -25}, rev, DRIVE_SPEED});
+  chassis.pid_wait();
+
+  fintake.move(-127);
+  mintake.move(-127);
+  tintake.move(-127);
+  pros::delay(100);
+  fintake.move(127);
+  mintake.move(85);
+  tintake.move(-55);
+  pros::delay(800);
+  tintake.move(127);
+
+  chassis.pid_odom_set({{{1, -64}, fwd, DRIVE_SPEED},
+                        {{8, -64}, fwd, DRIVE_SPEED}});
+  chassis.pid_wait();
+
+  pros::delay(300);
+
+  chassis.pid_turn_set({-22, -64}, rev, TURN_SPEED);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-22, -64}, rev, DRIVE_SPEED});
+  chassis.pid_wait();
+
+  hood.set(true);
+  pros::delay(1000);
+  hood.set(false);
+}
+
+void boomerang(){
+  chassis.pid_odom_set({{24, 24, 90}, fwd, DRIVE_SPEED});
+  chassis.pid_wait();
+}
