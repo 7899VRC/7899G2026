@@ -385,9 +385,9 @@ void soloawp(){
   tintake.move(127);
   
   chassis.pid_odom_set({{{0, 22}, fwd, DRIVE_SPEED},
-                        {{9.5, 32}, fwd, DRIVE_SPEED}}, false);
+                        {{9, 32}, fwd, DRIVE_SPEED}}, false);
   chassis.pid_wait();
-  chassis.pid_odom_set({{-21, 32, 90}, rev, DRIVE_SPEED}, false);
+  chassis.pid_odom_set({{-21, 32}, rev, DRIVE_SPEED}, false);
   while(chassis.odom_x_get() > -18){
     pros::delay(10);
   }
@@ -404,7 +404,7 @@ void soloawp(){
 
   scraper.set(true);
 
-  chassis.pid_odom_set({{{1, -64}, fwd, DRIVE_SPEED},
+  chassis.pid_odom_set({{{1, -65}, fwd, DRIVE_SPEED},
                       {{-21, -64}, rev, DRIVE_SPEED}}, false);
   chassis.pid_wait();
 
@@ -413,10 +413,10 @@ void soloawp(){
   hood.set(false);
   scraper.set(true);
 
-  chassis.pid_odom_set({{15, -64}, fwd, DRIVE_SPEED}, false);
+  chassis.pid_odom_set({{9, -64}, fwd, DRIVE_SPEED}, false);
   chassis.pid_wait();
-  chassis.pid_odom_set({{-38, -29}, rev, DRIVE_SPEED}, false);
-  while(chassis.odom_x_get() > -35){
+  chassis.pid_odom_set({{-40, -25}, rev, DRIVE_SPEED}, false);
+  while(chassis.odom_x_get() > -38){
     pros::delay(10);
   }
   fintake.move(-127);
