@@ -1,5 +1,22 @@
 #include "main.h"
 
+void antjam(int time){
+  double timer = pros::millis();
+  while(pros::millis()<time){
+    if(tintake.get_current_draw()<35 && tintake.get_current_draw()>-35){
+      fintake.move(-127);
+      mintake.move(-127);
+      tintake.move(-127);
+    }else{
+      fintake.move(127);
+      mintake.move(127);
+      tintake.move(127);
+    }
+    pros::delay(10);
+  }
+  pros::delay(10);
+}
+
 void subsystemcontrol(){
     if(master.get_digital(DIGITAL_L1) || master.get_digital(DIGITAL_L2)){
       intlift.set(false);

@@ -58,6 +58,8 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+      {"Right Seven Ball Push", rightseven},
+      {"Right Four Ball Push", rightfour},
       {"Solo Autonomous Win Point, LML\n\nBlaised Pork Belly", soloawp},
       {"Drive\n\nDrive forward and come back", drive_example},
       {"Turn\n\nTurn 3 times.", turn_example},
@@ -78,7 +80,7 @@ void initialize() {
   // Initialize chassis and auton selector
   chassis.initialize();
   ez::as::initialize();
-  master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
+  master.rumble(chassis.drive_imu_calibrated() ? ".." : "---");
 }
 
 /**
