@@ -446,41 +446,6 @@ void soloawp(){
   chassis.pid_wait();
 }
 
-void rightfour(){
-  chassis.drive_brake_set(pros::E_MOTOR_BRAKE_BRAKE);
-  hood.set(false);
-  intlift.set(false);
-  scraper.set(false);
-  fintake.move(127);
-  mintake.move(127);
-  tintake.move(127);
-
-  chassis.pid_odom_smooth_pp_set({{{12, 27}, fwd, DRIVE_SPEED}}, false);
-  chassis.pid_wait();
-  scraper.set(true);
-  chassis.pid_odom_set({{{30,8}, fwd, DRIVE_SPEED},
-                       {{32, -20}, fwd, DRIVE_SPEED}}, false);
-  chassis.pid_wait();
-  chassis.pid_odom_set({{36, 21}, rev, DRIVE_SPEED});
-  while(chassis.odom_y_get() < 18){
-    pros::delay(10);
-  }
-  hood.set(true);
-  chassis.pid_wait();
-
-  pros::delay(600);
-
-  hood.set(false);
-  scraper.set(false);
-
-  chassis.pid_odom_set({{43, 15}, fwd, DRIVE_SPEED}, false);
-  chassis.pid_wait();
-  chassis.pid_turn_set({45, 35}, rev, TURN_SPEED);
-  chassis.pid_wait();
-  chassis.pid_odom_set({{45, 40}, rev, DRIVE_SPEED}, false);
-  chassis.pid_wait();
-}
-
 void rightseven(){
   chassis.drive_brake_set(pros::E_MOTOR_BRAKE_BRAKE);
   hood.set(false);
@@ -493,24 +458,228 @@ void rightseven(){
   chassis.pid_odom_smooth_pp_set({{{12, 27}, fwd, DRIVE_SPEED}}, false);
   chassis.pid_wait();
   scraper.set(true);
-  chassis.pid_odom_smooth_pp_set({{{36, -8, 180}, fwd, DRIVE_SPEED}}, false);
+  chassis.pid_odom_set({{{32,8}, fwd, DRIVE_SPEED},
+                       {{34.5, -14}, fwd, DRIVE_SPEED}}, false);
   chassis.pid_wait();
-  chassis.pid_odom_set({{36, 21}, rev, DRIVE_SPEED});
+  chassis.pid_odom_set({{34.5, 21}, rev, DRIVE_SPEED});
   while(chassis.odom_y_get() < 18){
     pros::delay(10);
   }
   hood.set(true);
   chassis.pid_wait();
 
-  pros::delay(600);
+  pros::delay(450);
 
   hood.set(false);
   scraper.set(false);
+
+  descore.set(false);
 
   chassis.pid_odom_set({{43, 15}, fwd, DRIVE_SPEED}, false);
   chassis.pid_wait();
   chassis.pid_turn_set({45, 35}, rev, TURN_SPEED);
   chassis.pid_wait();
   chassis.pid_odom_set({{45, 40}, rev, DRIVE_SPEED}, false);
+  chassis.pid_wait();
+}
+
+void rightfour(){
+  chassis.drive_brake_set(pros::E_MOTOR_BRAKE_BRAKE);
+  hood.set(false);
+  intlift.set(false);
+  scraper.set(false);
+  fintake.move(127);
+  mintake.move(127);
+  tintake.move(127);
+
+  chassis.pid_odom_set({{{12, 27}, fwd, DRIVE_SPEED}}, false);
+  chassis.pid_wait();
+  scraper.set(true);
+  chassis.pid_odom_set({{{32.5, 0}, fwd, DRIVE_SPEED}}, false);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{34.5, 21}, rev, DRIVE_SPEED});
+  while(chassis.odom_y_get() < 18){
+    pros::delay(10);
+  }
+  hood.set(true);
+  chassis.pid_wait();
+
+  pros::delay(400);
+
+  hood.set(false);
+  scraper.set(false);
+
+  descore.set(false);
+
+  chassis.pid_odom_set({{43, 15}, fwd, DRIVE_SPEED}, false);
+  chassis.pid_wait();
+  chassis.pid_turn_set({45, 35}, rev, TURN_SPEED);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{45, 40}, rev, DRIVE_SPEED}, false);
+  chassis.pid_wait();
+}
+
+void leftseven(){
+  chassis.drive_brake_set(pros::E_MOTOR_BRAKE_BRAKE);
+  hood.set(false);
+  intlift.set(false);
+  scraper.set(false);
+  fintake.move(127);
+  mintake.move(127);
+  tintake.move(127);
+
+  chassis.pid_odom_smooth_pp_set({{{-12, 27}, fwd, DRIVE_SPEED}}, false);
+  chassis.pid_wait();
+  scraper.set(true);
+  chassis.pid_odom_set({{{-32,8}, fwd, DRIVE_SPEED},
+                       {{-36.5, -14.5}, fwd, DRIVE_SPEED}}, false);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-34.5, 21}, rev, DRIVE_SPEED});
+  while(chassis.odom_y_get() < 18){
+    pros::delay(10);
+  }
+  hood.set(true);
+  chassis.pid_wait();
+
+  pros::delay(450);
+
+  hood.set(false);
+  scraper.set(false);
+
+  descore.set(false);
+
+  chassis.pid_odom_set({{-27, 15}, fwd, DRIVE_SPEED}, false);
+  chassis.pid_wait();
+  chassis.pid_turn_set({-25, 35}, rev, TURN_SPEED);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-25, 40}, rev, DRIVE_SPEED}, false);
+  chassis.pid_wait();
+}
+
+void leftfour(){
+  chassis.drive_brake_set(pros::E_MOTOR_BRAKE_BRAKE);
+  hood.set(false);
+  intlift.set(false);
+  scraper.set(false);
+  fintake.move(127);
+  mintake.move(127);
+  tintake.move(127);
+
+  chassis.pid_odom_set({{{-12, 27}, fwd, DRIVE_SPEED}}, false);
+  chassis.pid_wait();
+  scraper.set(true);
+  chassis.pid_odom_set({{{-32.5, 0}, fwd, DRIVE_SPEED}}, false);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-34.5, 21}, rev, DRIVE_SPEED});
+  while(chassis.odom_y_get() < 18){
+    pros::delay(10);
+  }
+  hood.set(true);
+  chassis.pid_wait();
+
+  pros::delay(400);
+
+  hood.set(false);
+  scraper.set(false);
+
+  descore.set(false);
+
+  chassis.pid_odom_set({{-27, 15}, fwd, DRIVE_SPEED}, false);
+  chassis.pid_wait();
+  chassis.pid_turn_set({-25, 35}, rev, TURN_SPEED);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-25, 40}, rev, DRIVE_SPEED}, false);
+  chassis.pid_wait();
+}
+
+void rightfourthree(){
+  chassis.drive_brake_set(pros::E_MOTOR_BRAKE_BRAKE);
+  hood.set(false);
+  intlift.set(false);
+  scraper.set(true);
+  fintake.move(127);
+  mintake.move(127);
+  tintake.move(127);
+  
+  chassis.pid_odom_set({{{0, 22}, fwd, DRIVE_SPEED},
+                        {{9.25, 31}, fwd, DRIVE_SPEED}}, false);
+  chassis.pid_wait();
+  pros::delay(100);
+  chassis.pid_odom_set({{-21, 32}, rev, DRIVE_SPEED}, false);
+  while(chassis.odom_x_get() > -18){
+    pros::delay(10);
+  }
+  hood.set(true);
+  chassis.pid_wait();
+
+  pros::delay(400);
+
+  hood.set(false);
+  scraper.set(false);
+
+  chassis.pid_odom_set({{{-8, 32}, fwd, DRIVE_SPEED},
+                       {{-35, -6}, fwd, DRIVE_SPEED}}, false);
+  while(chassis.odom_x_get() > -32){
+    pros::delay(10);
+  }
+  intlift.set(true);
+  fintake.move(-127);
+  mintake.move(-85);
+  tintake.move(-55);
+  chassis.pid_wait();
+
+  chassis.pid_odom_set({{-13, 20.5}, rev, DRIVE_SPEED}, false);
+  chassis.pid_wait();
+  chassis.pid_turn_set({-37.5, 19.5}, fwd, TURN_SPEED);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-40, 19.5}, fwd, DRIVE_SPEED}, false);
+  chassis.pid_wait();
+}
+
+void leftfourthree(){
+  chassis.drive_brake_set(pros::E_MOTOR_BRAKE_BRAKE);
+  hood.set(false);
+  intlift.set(false);
+  scraper.set(true);
+  fintake.move(127);
+  mintake.move(127);
+  tintake.move(127);
+  
+  chassis.pid_odom_set({{{0, 22}, fwd, DRIVE_SPEED},
+                        {{-9.5, 31}, fwd, DRIVE_SPEED}}, false);
+  chassis.pid_wait();
+  pros::delay(100);
+  chassis.pid_odom_set({{21, 32}, rev, DRIVE_SPEED}, false);
+  chassis.pid_wait();
+
+  hood.set(true);
+  pros::delay(400);
+
+  hood.set(false);
+  scraper.set(false);
+
+  chassis.pid_odom_set({{{25, 6}, fwd, DRIVE_SPEED}}, false);
+  chassis.pid_wait_until(6);
+  scraper.set(true);
+  chassis.pid_wait();
+  chassis.pid_turn_set({39, -6}, rev, TURN_SPEED);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{39, -6}, rev, DRIVE_SPEED}, false);
+  chassis.pid_wait();
+
+  fintake.move(127);
+  mintake.move(85);
+  tintake.move(-55);
+
+  chassis.pid_turn_set(-45, TURN_SPEED);
+  chassis.pid_wait();
+
+  pros::delay(350);
+
+  chassis.pid_odom_set({{14, 21.5}, fwd, DRIVE_SPEED}, false);
+  chassis.pid_wait();
+  chassis.pid_turn_set({37.5, 21.5}, rev, TURN_SPEED);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{40.5, 21.5}, rev, DRIVE_SPEED}, false);
   chassis.pid_wait();
 }

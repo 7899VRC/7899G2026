@@ -20,3 +20,7 @@ void measure_offsets();
 void soloawp();
 void rightfour();
 void rightseven();
+void leftfour();
+void leftseven();
+void rightfourthree();
+void leftfourthree();

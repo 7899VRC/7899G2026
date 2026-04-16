@@ -58,9 +58,13 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+      {"Left Four Plus Three", leftfourthree},
+      {"Right Four Plus Three", rightfourthree},
+      {"Solo Autonomous Win Point, LML\n\nBlaised Pork Belly", soloawp},
+      {"Left Seven Ball Push", leftseven},
+      {"Left Four Ball Push", leftfour},
       {"Right Seven Ball Push", rightseven},
       {"Right Four Ball Push", rightfour},
-      {"Solo Autonomous Win Point, LML\n\nBlaised Pork Belly", soloawp},
       {"Drive\n\nDrive forward and come back", drive_example},
       {"Turn\n\nTurn 3 times.", turn_example},
       {"Drive and Turn\n\nDrive forward, turn, come back", drive_and_turn},
