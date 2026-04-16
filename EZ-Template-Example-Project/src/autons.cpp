@@ -458,10 +458,10 @@ void rightseven(){
   chassis.pid_odom_smooth_pp_set({{{12, 27}, fwd, DRIVE_SPEED}}, false);
   chassis.pid_wait();
   scraper.set(true);
-  chassis.pid_odom_set({{{32,8}, fwd, DRIVE_SPEED},
+  chassis.pid_odom_smooth_pp_set({{{32,8}, fwd, DRIVE_SPEED},
                        {{34.5, -14}, fwd, DRIVE_SPEED}}, false);
   chassis.pid_wait();
-  chassis.pid_odom_set({{34.5, 21}, rev, DRIVE_SPEED});
+  chassis.pid_odom_set({{33.5, 21}, rev, DRIVE_SPEED});
   while(chassis.odom_y_get() < 18){
     pros::delay(10);
   }
@@ -531,7 +531,7 @@ void leftseven(){
   chassis.pid_odom_smooth_pp_set({{{-12, 27}, fwd, DRIVE_SPEED}}, false);
   chassis.pid_wait();
   scraper.set(true);
-  chassis.pid_odom_set({{{-32,8}, fwd, DRIVE_SPEED},
+  chassis.pid_odom_smooth_pp_set({{{-32,8}, fwd, DRIVE_SPEED},
                        {{-36.5, -14.5}, fwd, DRIVE_SPEED}}, false);
   chassis.pid_wait();
   chassis.pid_odom_set({{-34.5, 21}, rev, DRIVE_SPEED});
