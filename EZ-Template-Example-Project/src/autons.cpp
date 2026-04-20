@@ -708,32 +708,53 @@ void skills(){
     pros::delay(10);
   }
   fintake.move(-127);
-  mintake.move(-127);
-  tintake.move(-127);
+  mintake.move(-100);
+  tintake.move(-80);
   chassis.pid_wait();
   fintake.move(127);
   mintake.move(75);
   tintake.move(-30);
-  pros::delay(700);
+  pros::delay(800);
 
   fintake.move(127);
   mintake.move(127);
   tintake.move(127);
 
   scraper.set(true);
-  chassis.pid_odom_smooth_pp_set({{{-28,8}, fwd, DRIVE_SPEED},
-                       {{-32.5, -14.5}, fwd, DRIVE_SPEED}}, false);
+  chassis.pid_odom_set({{-31.75, 8}, fwd, DRIVE_SPEED});
   chassis.pid_wait();
-  pros::delay(500);
-  chassis.pid_odom_set({{-32.5, 21}, rev, DRIVE_SPEED});
-  while(chassis.odom_y_get() < 19){
+  chassis.pid_turn_set({-31.75, -14.5}, fwd, TURN_SPEED);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-31.75, -14.5}, fwd, DRIVE_SPEED});
+  chassis.pid_wait();
+  pros::delay(600);
+  chassis.odom_xyt_set(0, 0, 0);
+  chassis.pid_odom_smooth_pp_set({{{12,-30}, rev, DRIVE_SPEED},
+                       {{12, -78}, rev, DRIVE_SPEED},
+                      {{0, -100}, rev, DRIVE_SPEED}});
+  chassis.pid_wait();
+  chassis.pid_turn_set({0, -86}, fwd, TURN_SPEED);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{0, -86}, rev, DRIVE_SPEED});
+  while(chassis.odom_y_get() < -84.75){
     pros::delay(10);
   }
   hood.set(true);
   chassis.pid_wait();
 
-  pros::delay(500);
+  pros::delay(750);
 
   hood.set(false);
   scraper.set(false);
 }
+
+// void skills(){
+//   chassis.drive_brake_set(pros::E_MOTOR_BRAKE_BRAKE);
+//   hood.set(false);
+//   intlift.set(false);
+//   scraper.set(false);
+//   descore.set(false);
+//   fintake.move(127);
+//   mintake.move(127);
+//   tintake.move(127);
+// }
