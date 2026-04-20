@@ -16,6 +16,7 @@ inline ez::Piston intlift('E');
 inline ez::Piston midesc('C');
 
 inline pros::Distance hoodd(21);
+inline pros::Distance front(16);
 
 // inline pros::Motor intake(1);
 // inline pros::adi::DigitalIn limit_switch('A');

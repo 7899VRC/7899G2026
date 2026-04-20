@@ -274,7 +274,7 @@ void opcontrol() {
       fintake.move(127);
     }else if(master.get_digital(DIGITAL_R2)){
       intlift.set(true);
-      fintake.move(-127);
+      fintake.move(-50);
     }else{
       fintake.move(0);
     }
@@ -282,20 +282,20 @@ void opcontrol() {
     if(master.get_digital(DIGITAL_L1) || master.get_digital(DIGITAL_L2)){
       mintake.move(127);
     }else if(master.get_digital(DIGITAL_R1)){
-      mintake.move(127);
+      mintake.move(50);
     }else if(master.get_digital(DIGITAL_R2)){
       mintake.move(-127);
     }else{
       mintake.move(0);
     }
-
+ 
     if(master.get_digital(DIGITAL_L1)){
       tintake.move(127);
       hood.set(true);
     }else if(master.get_digital(DIGITAL_R1)){
-      tintake.move(-127);
+      tintake.move(-20);
     }else if(master.get_digital(DIGITAL_R2)){
-      tintake.move(-127);
+      tintake.move(-60);
     }else if(master.get_digital(DIGITAL_L2)){
       hood.set(false);
       if(hoodd.get() > 125){

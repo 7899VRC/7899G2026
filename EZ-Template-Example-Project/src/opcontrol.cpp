@@ -1,4 +1,5 @@
 #include "main.h"
+#include "pros/misc.h"
 
 void antjam(int time){
   double timer = pros::millis();
@@ -24,7 +25,7 @@ void subsystemcontrol(){
     }else if (master.get_digital(DIGITAL_R1)){
       intlift.set(false);
       fintake.move(127);
-    }else if(master.get_digital(DIGITAL_R2)){
+    }else if(master.get_digital(DIGITAL_R2)||master.get_digital(DIGITAL_Y)){
       intlift.set(true);
       fintake.move(-127);
     }else{
@@ -35,7 +36,7 @@ void subsystemcontrol(){
       mintake.move(127);
     }else if(master.get_digital(DIGITAL_R1)){
       mintake.move(127);
-    }else if(master.get_digital(DIGITAL_R2)){
+    }else if(master.get_digital(DIGITAL_R2)||master.get_digital(DIGITAL_Y)){
       mintake.move(-127);
     }else{
       mintake.move(0);
@@ -47,6 +48,8 @@ void subsystemcontrol(){
     }else if(master.get_digital(DIGITAL_R1)){
       tintake.move(-127);
     }else if(master.get_digital(DIGITAL_R2)){
+      tintake.move(0);
+    }else if(master.get_digital(DIGITAL_Y)){
       tintake.move(-127);
     }else if(master.get_digital(DIGITAL_L2)){
       hood.set(false);
@@ -61,7 +64,6 @@ void subsystemcontrol(){
           hood.button_toggle(master.get_digital(DIGITAL_RIGHT));
           descore.button_toggle(master.get_digital( DIGITAL_B));
           scraper.button_toggle(master.get_digital(DIGITAL_DOWN));
-          intlift.button_toggle(master.get_digital(DIGITAL_Y));
           midesc.button_toggle(master.get_digital(DIGITAL_UP));
 
           pros::delay(ez::util::DELAY_TIME);
@@ -75,6 +77,5 @@ void subsystemcontrol(){
     hood.button_toggle(master.get_digital(DIGITAL_RIGHT));
     descore.button_toggle(master.get_digital(DIGITAL_B));
     scraper.button_toggle(master.get_digital(DIGITAL_DOWN));
-    intlift.button_toggle(master.get_digital(DIGITAL_Y));
     midesc.button_toggle(master.get_digital(DIGITAL_UP));
 }
